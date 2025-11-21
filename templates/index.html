@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Q&A System</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="/static/styles.css">
+
+</head>
+<body>
+
+<div class="wrapper">
+
+    <div class="glass-card">
+
+        <h1 class="title">
+            <span class="gradient-text">AI Q&A System</span>
+        </h1>
+
+        <p class="subtitle">Powered by Google Gemini API</p>
+
+        <div class="form-group">
+            <label>Your Question</label>
+            <textarea id="question" placeholder="Ask me anything..."></textarea>
+        </div>
+
+        <button onclick="askAI()" id="submitBtn" class="glow-btn">
+            Generate Answer
+        </button>
+
+        <div class="result-box" id="resultBox">
+            <div class="processed">
+                <strong>Processed Input:</strong>
+                <p id="processedOutput">...</p>
+            </div>
+
+            <div class="ai-header">AI Response</div>
+
+            <div class="answer" id="answerOutput"></div>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    async function askAI() {
+        const questionInput = document.getElementById('question');
+        const btn = document.getElementById('submitBtn');
+        const resultBox = document.getElementById('resultBox');
+        const processedOut = document.getElementById('processedOutput');
+        const answerOut = document.getElementById('answerOutput');
+
+        const question = questionInput.value.trim();
+
+        if (!question) {
+            alert("Please type a question first!");
+            return;
+        }
+
+        // Loading State
+        btn.disabled = true;
+        btn.innerText = "Thinking...";
+        btn.classList.add("loading");
+        resultBox.style.display = 'none';
+
+        try {
+            const response = await fetch('/ask', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ question: question })
+            });
+
+            const data = await response.json();
+
+            if (data.error) {
+                alert("Error: " + data.error);
+            } else {
+                processedOut.innerText = data.processed;
+                answerOut.innerText = data.answer;
+                resultBox.style.display = 'block';
+            }
+
+        } catch (error) {
+            alert("Network Error: " + error.message);
+        } finally {
+            btn.disabled = false;
+            btn.innerText = "Generate Answer";
+            btn.classList.remove("loading");
+        }
+    }
+</script>
+
+</body>
+</html>
