@@ -4,11 +4,11 @@ import os
 
 # --- CONFIGURATION ---
 # PASTE YOUR API KEY BELOW INSIDE THE QUOTES
-API_KEY = "PASTE_YOUR_API_KEY_HERE" 
+API_KEY = "AIzaSyAi8D4YLatFVrBrC4qqCha1xZ_CeKsWj9A" 
 
 def configure_genai():
     """Configures the AI model with the API key."""
-    if API_KEY == "PASTE_YOUR_API_KEY_HERE":
+    if API_KEY == "AIzaSyAi8D4YLatFVrBrC4qqCha1xZ_CeKsWj9A":
         print("ERROR: You must paste your Google API Key in the code first!")
         return None
     
